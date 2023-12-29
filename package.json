@@ -1,0 +1,23 @@
+{
+  "name": "raycasting_engine",
+  "version": "1.0.0",
+  "description": "Javascript Raycasting Engine",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/losslessring/raycasting_engine.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/losslessring/raycasting_engine/issues"
+  },
+  "homepage": "https://github.com/losslessring/raycasting_engine#readme",
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.2"
+  }
+}
