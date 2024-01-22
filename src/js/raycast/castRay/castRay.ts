@@ -1,4 +1,5 @@
 import { getVCollision } from "../getVCollision/getVCollision.js"
+import { getHCollision } from "./../getHCollision/getHCollision.js"
 
 type Ray = {
     angle: number
@@ -14,8 +15,13 @@ export const castRay = ({ angle, CELL_SIZE, player, map }: Ray) => {
         player,
         map,
     })
-    // const hCollision = getHCollision(angle)
+    const hCollision = getHCollision({
+        angle,
+        CELL_SIZE,
+        player,
+        map,
+    })
 
-    return vCollision
-    // return hCollision.distance >= vCollision.distance ? vCollision : hCollision
+    // return vCollision
+    return hCollision.distance >= vCollision.distance ? vCollision : hCollision
 }

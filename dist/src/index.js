@@ -3,6 +3,7 @@ import { clearScreenFactory } from "./js/clearScreenFactory/clearScreenFactory.j
 import { renderMinimap } from "./js/minimap/renderMinimap/renderMinimap.js";
 import { toRadians } from "./js/utils/toRadians/toRadians.js";
 import { getRays } from "./js/raycast/getRays/getRays.js";
+import { renderScene } from "./js/scene/renderScene/renderScene.js";
 const SCREEN_WIDTH = window.innerWidth;
 const SCREEN_HEIGHT = window.innerHeight;
 const canvas = document.createElement("canvas");
@@ -15,6 +16,10 @@ const CELL_SIZE = 64;
 const PLAYER_SIZE = 10;
 const FOV = toRadians(60);
 const COLORS = {
+    floor: "#663300",
+    ceiling: "#ccffff",
+    wall: "#009900",
+    wallDark: "#004d00",
     rays: "#ffa600",
 };
 const map = [
@@ -56,7 +61,14 @@ const gameLoop = () => {
         CELL_SIZE,
         map,
     });
-    // renderScene(rays)
+    renderScene({
+        context,
+        CELL_SIZE,
+        COLORS,
+        SCREEN_HEIGHT,
+        player,
+        rays,
+    });
     renderMinimap({
         context,
         map,
@@ -85,5 +97,5 @@ document.addEventListener("keyup", (e) => {
     }
 });
 document.addEventListener("mousemove", (e) => {
-    player.angle = player.angle + toRadians(e.movementX);
+    player.angle = player.angle + toRadians(e.movementX / 2);
 });
