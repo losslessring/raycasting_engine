@@ -1,4 +1,3 @@
-//import { clearScreenFactory } from "../../../src/js/clearScreenFactory/clearScreenFactory.js"
 import { clearScreenFactory } from "./js/clearScreenFactory/clearScreenFactory.js";
 import { renderMinimap } from "./js/minimap/renderMinimap/renderMinimap.js";
 import { toRadians } from "./js/utils/toRadians/toRadians.js";
@@ -41,10 +40,6 @@ const player = {
         this.y = this.y + Math.sin(this.angle) * this.speed;
     },
 };
-// const movePlayer = () => {
-//     player.x = player.x + Math.cos(player.angle) * player.speed
-//     player.y = player.y + Math.sin(player.angle) * player.speed
-// }
 const clearScreen = clearScreenFactory({
     context,
     fillStyle: "red",
