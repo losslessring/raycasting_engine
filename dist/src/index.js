@@ -1,15 +1,22 @@
 //import { clearScreenFactory } from "../../../src/js/clearScreenFactory/clearScreenFactory.js"
 import { clearScreenFactory } from "./js/clearScreenFactory/clearScreenFactory.js";
-import { renderMinimap } from "./js/renderMinimap/renderMinimap.js";
-const SCREEN_WIDTH = String(window.innerWidth);
-const SCREEN_HEIGHT = String(window.innerHeight);
+import { renderMinimap } from "./js/minimap/renderMinimap/renderMinimap.js";
+import { toRadians } from "./js/utils/toRadians/toRadians.js";
+import { getRays } from "./js/raycast/getRays/getRays.js";
+const SCREEN_WIDTH = window.innerWidth;
+const SCREEN_HEIGHT = window.innerHeight;
 const canvas = document.createElement("canvas");
-canvas.setAttribute("width", SCREEN_WIDTH);
-canvas.setAttribute("height", SCREEN_HEIGHT);
+canvas.setAttribute("width", String(SCREEN_WIDTH));
+canvas.setAttribute("height", String(SCREEN_HEIGHT));
 document.body.appendChild(canvas);
 const context = canvas.getContext("2d");
 const TICK = 30;
 const CELL_SIZE = 64;
+const PLAYER_SIZE = 10;
+const FOV = toRadians(60);
+const COLORS = {
+    rays: "#ffa600",
+};
 const map = [
     [1, 1, 1, 1, 1, 1, 1],
     [1, 0, 0, 0, 0, 0, 1],
@@ -24,7 +31,15 @@ const player = {
     y: CELL_SIZE * 2,
     angle: 0,
     speed: 0,
+    movePlayer() {
+        this.x = this.x + Math.cos(this.angle) * this.speed;
+        this.y = this.y + Math.sin(this.angle) * this.speed;
+    },
 };
+// const movePlayer = () => {
+//     player.x = player.x + Math.cos(player.angle) * player.speed
+//     player.y = player.y + Math.sin(player.angle) * player.speed
+// }
 const clearScreen = clearScreenFactory({
     context,
     fillStyle: "red",
@@ -33,6 +48,15 @@ const clearScreen = clearScreenFactory({
 });
 const gameLoop = () => {
     clearScreen();
+    player.movePlayer();
+    const rays = getRays({
+        player,
+        FOV,
+        SCREEN_WIDTH,
+        CELL_SIZE,
+        map,
+    });
+    // renderScene(rays)
     renderMinimap({
         context,
         map,
@@ -40,6 +64,26 @@ const gameLoop = () => {
         posX: 0,
         posY: 0,
         scale: 0.5,
+        PLAYER_SIZE,
+        player,
+        COLORS,
+        rays,
     });
 };
 setInterval(gameLoop, TICK);
+document.addEventListener("keydown", (e) => {
+    if (e.key === "w") {
+        player.speed = 2;
+    }
+    if (e.key === "s") {
+        player.speed = -2;
+    }
+});
+document.addEventListener("keyup", (e) => {
+    if (e.key === "w" || e.key === "s") {
+        player.speed = 0;
+    }
+});
+document.addEventListener("mousemove", (e) => {
+    player.angle = player.angle + toRadians(e.movementX);
+});
